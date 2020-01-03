@@ -14,15 +14,14 @@ RUN sudo apt-get install -y wget \
 RUN sudo apt-get update --fix-missing
 RUN sudo apt-get install -y subversion
 
+ENV JAVA_HOME=/work/jdk1.8.0_231
+ENV JRE_HOME=$JAVA_HOME/jre
+ENV CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+ENV PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+
 ADD file/ work/
 
 WORKDIR /work
-
-RUN echo "export JAVA_HOME=/work/jdk1.8.0_231">>/etc/profile
-RUN echo "export JRE_HOME=$JAVA_HOME/jre">>/etc/profile
-RUN echo "export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH">>/etc/profile
-RUN echo "export JAVA_PATH=$JAVA_HOME/bin:$JRE_HOME/bin">>/etc/profile
-RUN echo "export PATH=$PATH:$JAVA_PATH">>/etc/profile
 
 RUN mkdir -p /root/.m2/ && mv settings.xml /root/.m2/
     
