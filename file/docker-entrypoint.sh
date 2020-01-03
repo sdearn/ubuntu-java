@@ -13,6 +13,8 @@ echo "yes" | svn co --username=${SVN_USER} --password=${SVN_PWD}  ${SVN_URL} pro
 
 cd  project/${app_name}
 
+env
+
 yes|cp -r ${environment} pom.xml
 
 ../../maven/bin/mvn ${build_cmd}
@@ -26,5 +28,7 @@ cp project/${app_name}/target/${build_file} tomcat/webapps
 sed -i "2i JAVA_OPTS=\"$JAVA_OPTS -Dfile.encoding=UTF8  -Duser.timezone=GMT+08\"" /work/tomcat/bin/catalina.sh
 
 chmod +x /work/tomcat/bin/catalina.sh
+
+xvfb-run -a /opt/openoffice4/program/soffice -headless -accept="socket,host=127.0.0.1,port=8100;urp;" -nofirststartwizard &
 
 /work/tomcat/bin/catalina.sh run
