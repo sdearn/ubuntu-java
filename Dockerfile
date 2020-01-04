@@ -15,10 +15,7 @@ RUN sudo apt-get install -y wget \
 RUN sudo apt-get update --fix-missing
 RUN sudo apt-get install -y subversion
 
-ENV JAVA_HOME=/work/jdk1.8.0_231
-ENV JRE_HOME=$JAVA_HOME/jre
-ENV CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
-ENV PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+
 
 ADD file/ work/
 
@@ -36,9 +33,20 @@ RUN unzip apache-tomcat*.zip && rm -f apache-tomcat*.zip && mv apache-tomcat* to
 
 RUN unzip apache-maven*.zip && rm -f apache-maven*.zip && mv apache-maven* maven
 
+RUN echo "export JAVA_HOME=/usr/lib/jvm/Java-7-openjdk-amd64">>/etc/profile
+RUN echo "export JRE_HOME=$JAVA_HOME/jre">>/etc/profile
+RUN echo "export CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH">>/etc/profile
+RUN echo "export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH">>/etc/profile
 RUN echo "export M2_HOME=/work/maven">>/etc/profile
-
 RUN echo "export PATH=$M2_HOME/bin:$PATH">>/etc/profile
+
+
+ENV JAVA_HOME=/work/jdk1.8.0_231
+ENV JRE_HOME=$JAVA_HOME/jre
+ENV CLASSPATH=$JAVA_HOME/lib:$JRE_HOME/lib:$CLASSPATH
+ENV PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
+ENV M2_HOME=/work/maven
+ENV PATH=$M2_HOME/bin:$PATH
 
 RUN cd /work/Apache_OpenOffice_zh-CN/DEBS && sudo dpkg -i *.deb
 
