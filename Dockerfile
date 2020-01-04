@@ -29,6 +29,8 @@ RUN mkdir -p /root/.m2/ && mv settings.xml /root/.m2/
 
 RUN ["chmod", "+x", "/work/docker-entrypoint.sh"]
 
+RUN ["chmod", "+x", "/work/jdk1.8.0_231"]
+
 RUN unzip apache-tomcat*.zip && rm -f apache-tomcat*.zip && mv apache-tomcat* tomcat
 
 RUN unzip apache-maven*.zip && rm -f apache-maven*.zip && mv apache-maven* maven
