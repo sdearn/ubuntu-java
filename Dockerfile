@@ -6,6 +6,7 @@ RUN sudo rm -f /etc/localtime \
     && sudo ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 
 RUN sudo apt-get update --fix-missing
+
 RUN sudo apt-get install -y wget \
     && sudo apt-get install -y zip \
     && sudo apt-get install -y vim \
@@ -24,14 +25,20 @@ ADD file/ work/
 WORKDIR /work
 
 RUN mkdir -p /root/.m2/ && mv settings.xml /root/.m2/
-    
+
 #RUN mv java.security /work/jdk1.8.0_231/jre/lib/security/
 
 RUN ["chmod", "+x", "/work/docker-entrypoint.sh"]
 
+RUN ["chmod", "+x", "/work/jdk1.8.0_231"]
+
 RUN unzip apache-tomcat*.zip && rm -f apache-tomcat*.zip && mv apache-tomcat* tomcat
 
 RUN unzip apache-maven*.zip && rm -f apache-maven*.zip && mv apache-maven* maven
+
+RUN echo "export M2_HOME=/work/maven">>/etc/profile
+
+RUN echo "export PATH=$M2_HOME/bin:$PATH">>/etc/profile
 
 RUN cd /work/Apache_OpenOffice_zh-CN/DEBS && sudo dpkg -i *.deb
 
